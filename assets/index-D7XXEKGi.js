@@ -8780,7 +8780,7 @@ function Header({ itemCount }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: headerContainer, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: headerTitle, children: "SHOP" }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: "/images/cart.png", alt: "cart", className: cartImg }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: "./images/cart.png", alt: "cart", className: cartImg }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: count, children: itemCount })
     ] })
   ] });
@@ -8793,7 +8793,7 @@ const addButton = css`
 `;
 function AddButton({ onClick }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { backgroundColor: "#000000", color: "#ffffff", radius: "4px", onClick, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: addButton, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: "/images/addCart.png", alt: "addCart" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: "./images/addCart.png", alt: "addCart" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "담기" })
   ] }) });
 }
@@ -8805,7 +8805,7 @@ const deleteButton = css`
 `;
 function DeleteButton({ onClick }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { backgroundColor: "#eaeaea", color: "#000000", radius: "4px", onClick, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: deleteButton, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: "/images/deleteCart.png", alt: "deleteCart" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: "./images/deleteCart.png", alt: "deleteCart" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "빼기" })
   ] }) });
 }
@@ -9163,6 +9163,9 @@ function ProductsPage() {
       setItemCount(new Set(carts == null ? void 0 : carts.map((cart) => cart.product.id)).size);
     }
   }, [carts]);
+  if (isLoadingCarts) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: "로딩중..." });
+  }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: productPageContainer, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Header, { itemCount }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: productWrapper, children: [
