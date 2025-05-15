@@ -8868,6 +8868,11 @@ const shimmer = keyframes`
     background-position: 468px 0;
   }
 `;
+const skeletonListContainer = css`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+`;
 const skeletonBase = css`
   background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
   background-size: 800px 104px;
@@ -8922,11 +8927,6 @@ function ProductSkeleton() {
     ] })
   ] });
 }
-const skeletonListContainer = css`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-`;
 function ProductListSkeleton() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: skeletonListContainer, children: Array(6).fill(0).map((_, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(ProductSkeleton, {}, index)) });
 }
@@ -9076,6 +9076,30 @@ const selectBoxContainer = css`
   justify-content: space-between;
   margin: 20px 0px;
 `;
+async function postCartItem({ productId, quantity }) {
+  const res = await fetch(`${"http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com"}/cart-items`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${"cm9zaWVsc2g6cGFzc3dvcmQ"}`
+    },
+    body: JSON.stringify({
+      productId,
+      quantity
+    })
+  });
+  return res;
+}
+async function deleteCartItem({ cartId }) {
+  const res = await fetch(`${"http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com"}/cart-items/${cartId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${"cm9zaWVsc2g6cGFzc3dvcmQ"}`
+    }
+  });
+  return res;
+}
 const SORT = {
   "낮은 가격 순": "asc",
   "높은 가격 순": "desc"
@@ -9122,16 +9146,9 @@ function ProductsPage() {
       }, 3e3);
       return;
     }
-    const res = await fetch(`${"http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com"}/cart-items`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${"cm9zaWVsc2g6cGFzc3dvcmQ"}`
-      },
-      body: JSON.stringify({
-        productId,
-        quantity
-      })
+    const res = await postCartItem({
+      productId,
+      quantity
     });
     if (!res.ok) {
       setIsErrorAddCardItem(true);
@@ -9142,14 +9159,8 @@ function ProductsPage() {
     await refetchCarts();
   };
   const handleDeleteCartItem = async ({ productId }) => {
-    const cartId = carts == null ? void 0 : carts.filter((cart) => cart.product.id === productId)[0].id;
-    const res = await fetch(`${"http://techcourse-lv2-alb-974870821.ap-northeast-2.elb.amazonaws.com"}/cart-items/${cartId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${"cm9zaWVsc2g6cGFzc3dvcmQ"}`
-      }
-    });
+    const cartId = (carts == null ? void 0 : carts.filter((cart) => cart.product.id === productId)[0].id) || 0;
+    const res = await deleteCartItem({ cartId });
     if (!res.ok) {
       setIsErrorDeleteCardItem(true);
       setTimeout(() => {
