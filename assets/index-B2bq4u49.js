@@ -28669,7 +28669,11 @@ const productHandlers = [
 const handlers = [...productHandlers, ...cartHandlers];
 const worker = setupWorker(...handlers);
 {
-  worker.start().then(() => {
+  worker.start({
+    serviceWorker: {
+      url: "/react-shopping-products/mockServiceWorker.js"
+    }
+  }).then(() => {
     createRoot(document.getElementById("root")).render(
       /* @__PURE__ */ jsxRuntimeExports.jsx(React.StrictMode, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) })
     );
